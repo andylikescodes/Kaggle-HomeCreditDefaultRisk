@@ -10,6 +10,8 @@ from sklearn.model_selection import KFold
 from sklearn.ensemble import ExtraTreesClassifier
 
 from sklearn.linear_model import LogisticRegressionCV
+
+import xgboost as xgb
 # TODO:
 # Random forest
 # - check feature importance
@@ -28,6 +30,24 @@ def plot_roc(y_test, y_pred_rt):
     plt.ylabel('True positive rate')
     plt.title('ROC curve')
     plt.show()
+
+
+def read_in_data():
+    application_train = pd.read_csv('data/application_train.csv', index_col=0)
+    application_test = pd.read_csv('data/application_test.csv', index_col=0)
+    full_set = pd.concat([application_train, application_test], sort=False)
+    return full_set
+
+
+def impute(x):
+    imp = Imputer(missing_values='NaN', strategy='mean', axis=0)
+    return imp.fit_transform(x)
+
+
+def get_feature_columns(df):
+    cols = df.columns.tolist()
+    cols.remove('TARGET')
+    return cols
 
 
 def process_data(selected_cols='original'):
@@ -120,6 +140,7 @@ def check_col_nas(df):
         'column_name': cols,
         'percentage_nas': percentage_nas
     })
+
 
 # x_train, y_train, test = process_data()
 #
