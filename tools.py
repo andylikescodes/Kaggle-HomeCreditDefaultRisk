@@ -35,8 +35,7 @@ def plot_roc(y_test, y_pred_rt):
 def read_in_data():
     application_train = pd.read_csv('data/application_train.csv', index_col=0)
     application_test = pd.read_csv('data/application_test.csv', index_col=0)
-    full_set = pd.concat([application_train, application_test], sort=False)
-    return full_set
+    return application_train, application_test
 
 
 def impute(x):
@@ -141,6 +140,21 @@ def check_col_nas(df):
         'percentage_nas': percentage_nas
     })
 
+
+def get_cols_for_dtype(df):
+    unique_dtypes = np.unique(df.dtypes)
+    dictionary = {}
+    for d in unique_dtypes:
+        cols = []
+        for col in df.dtypes.index:
+            if df.dtypes[col] == d:
+                cols.append(col)
+        dictionary[d] = cols
+    return unique_dtypes, dictionary
+
+# def get_col_types(df):
+#     for col in df.columns.tolist():
+#         if df[col]
 
 # x_train, y_train, test = process_data()
 #
